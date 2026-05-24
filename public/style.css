@@ -1,5 +1,5 @@
 
-body { /* 해당 코드의 의미는 바로 배경의 움직임을 나타냄 */
+body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -55,7 +55,7 @@ body { /* 해당 코드의 의미는 바로 배경의 움직임을 나타냄 */
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
     border: 2px solid #000;
 }
-.text-box2{/* For flag output */
+.text-box2{
     text-align: center;
     width: 400px;
     margin: 20px auto;
