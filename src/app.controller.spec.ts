@@ -8,6 +8,7 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     process.env.FLAG = 'N4U{test-real-flag}';
+    process.env.ADMIN_PASSWORD = 'test-admin-password';
 
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
@@ -43,9 +44,29 @@ describe('AppController', () => {
       });
     });
 
+    it('returns admin for a broad SQL injection bypass', () => {
+      expect(
+        appController.login({
+          username: 'guest',
+          password: '" OR 1=1 -- "',
+        }),
+      ).toEqual({
+        success: true,
+        message: 'Login successful',
+        role: 'admin',
+        clickCountRequired: 99999,
+      });
+    });
+
     it('rejects invalid credentials', () => {
       expect(() =>
         appController.login({ username: 'guest', password: 'wrong' }),
+      ).toThrow(UnauthorizedException);
+    });
+
+    it('rejects malformed SQL injection attempts without leaking errors', () => {
+      expect(() =>
+        appController.login({ username: 'guest', password: '"admin"--"' }),
       ).toThrow(UnauthorizedException);
     });
   });

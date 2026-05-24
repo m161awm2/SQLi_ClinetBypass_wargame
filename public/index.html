@@ -4,118 +4,42 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SQLi + Client Side Bypass CTF</title>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <header>
+      <h1 class="rainbow_text">Super Mega Ultra Hardest CTF Challenge</h1>
+      <a href="https://github.com/m161awm2/SQLi_ClinetBypass_wargame" target="_blank" rel="noopener noreferrer">
+        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="32" height="32">
+      </a>
+    </header>
     <main>
+      
       <section id="login-section">
-        <h1>CTF Login</h1>
-        <form id="login-form" autocomplete="off">
-          <div>
+        <h1 class="text-box2">로그인을 하세요!</h1>
+        <form id="login-form" autocomplete="off" class="login-box">
+          <div> 
             <label for="username">Username</label>
             <input id="username" name="username" type="text" value="guest" />
           </div>
           <div>
             <label for="password">Password</label>
-            <input id="password" name="password" type="text" value="guest" />
+            <input id="password" name="password" type="password" value="guest" />
           </div>
           <button type="submit">로그인</button>
         </form>
-        <p id="login-message" aria-live="polite"></p>
+        <p id="login-message" aria-live="polite" class="text-box">Login to get flag</p>
       </section>
-
-      <section id="attack-section" hidden>
+      <section id="attack-section" hidden class="fight">
         <h2>Attack Phase</h2>
         <p>Role: <strong id="role-output">guest</strong></p>
         <p>HP Count: <strong id="hp-count-output">99999</strong></p>
-        <button id="attack-button" type="button">공격하기</button>
+        <button id="attack-button" type="button">⚔️공격하기⚔️</button>
         <p id="flag-output" aria-live="polite"></p>
       </section>
+  
     </main>
 
-    <script>
-      let hpCount = 99999;
-      let userRole = 'guest';
-
-      const loginSection = document.getElementById('login-section');
-      const attackSection = document.getElementById('attack-section');
-      const loginForm = document.getElementById('login-form');
-      const loginMessage = document.getElementById('login-message');
-      const roleOutput = document.getElementById('role-output');
-      const hpCountOutput = document.getElementById('hp-count-output');
-      const attackButton = document.getElementById('attack-button');
-      const flagOutput = document.getElementById('flag-output');
-
-      function renderAttackState() {
-        roleOutput.textContent = userRole;
-        hpCountOutput.textContent = String(hpCount);
-      }
-
-      async function postJson(url, body) {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(body),
-        });
-
-        const data = await response.json().catch(() => ({}));
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Request failed');
-        }
-
-        return data;
-      }
-
-      loginForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
-
-        const formData = new FormData(loginForm);
-        const username = String(formData.get('username') || '');
-        const password = String(formData.get('password') || '');
-
-        loginMessage.textContent = '로그인 요청 중...';
-
-        try {
-          const result = await postJson('/api/login', { username, password });
-
-          userRole = result.role || 'guest';
-          hpCount = Number(result.clickCountRequired || 99999);
-
-          loginMessage.textContent = result.message || 'Login successful';
-          loginSection.hidden = true;
-          attackSection.hidden = false;
-          flagOutput.textContent = '';
-          renderAttackState();
-        } catch (error) {
-          loginMessage.textContent = error.message;
-        }
-      });
-
-      attackButton.addEventListener('click', async () => {
-        hpCount -= 1;
-        renderAttackState();
-
-        if (hpCount <= 0) {
-          attackButton.disabled = true;
-          flagOutput.textContent = '플래그 요청 중...';
-
-          try {
-            const result = await postJson('/api/flag', {
-              currentCount: hpCount,
-              role: userRole,
-            });
-
-            flagOutput.textContent = result.flag;
-          } catch (error) {
-            flagOutput.textContent = error.message;
-            attackButton.disabled = false;
-          }
-        }
-      });
-
-      renderAttackState();
-    </script>
+    <script src="./main.js"></script>
   </body>
 </html>

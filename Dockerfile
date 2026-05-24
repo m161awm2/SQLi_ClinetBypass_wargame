@@ -26,10 +26,12 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --prod --frozen-lockfile
 
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/public ./public
-COPY --from=build /app/.env ./.env
+COPY --from=build --chown=node:node /app/dist ./dist
+COPY --from=build --chown=node:node /app/public ./public
+COPY --from=build --chown=node:node /app/.env ./.env
 
 EXPOSE 3000
 
-CMD ["pnpm", "start:prod"]
+USER node
+
+CMD ["node", "dist/main"]

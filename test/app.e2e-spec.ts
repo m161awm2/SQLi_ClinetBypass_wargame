@@ -9,6 +9,7 @@ describe('AppController (e2e)', () => {
 
   beforeEach(async () => {
     process.env.FLAG = 'N4U{test-real-flag}';
+    process.env.ADMIN_PASSWORD = 'test-admin-password';
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -35,6 +36,19 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .post('/api/login')
       .send({ username: 'guest', password: 'x" OR role = "admin" -- "' })
+      .expect(200)
+      .expect({
+        success: true,
+        message: 'Login successful',
+        role: 'admin',
+        clickCountRequired: 99999,
+      });
+  });
+
+  it('/api/login (POST) returns admin for a broad SQL injection bypass', () => {
+    return request(app.getHttpServer())
+      .post('/api/login')
+      .send({ username: 'guest', password: '" OR 1=1 -- "' })
       .expect(200)
       .expect({
         success: true,

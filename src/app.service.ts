@@ -1,10 +1,12 @@
 import alasql from 'alasql';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class AppService {
   private readonly flag =
     process.env.FLAG ?? process.env.FAKE_FLAG ?? 'N4U{fake-flag}';
+  private readonly adminPassword = process.env.ADMIN_PASSWORD ?? randomUUID();
   private readonly db = new alasql.Database();
 
   constructor() {
@@ -19,18 +21,25 @@ export class AppService {
     this.db.exec(`
       INSERT INTO users VALUES
         ("guest", "guest", "guest"),
-        ("admin", "not_guessable_password", "admin")
+        ("admin", "${this.adminPassword}", "admin")
     `);
   }
 
   login(username = '', password = '') {
-    const rows = this.db.exec(`
-      SELECT username, role
-      FROM users
-      WHERE username = "${String(username)}"
-        AND password = "${String(password)}"
-      LIMIT 1
-    `) as Array<{ username: string; role: string }>;
+    let rows: Array<{ username: string; role: string }>;
+
+    try {
+      rows = this.db.exec(`
+        SELECT username, role
+        FROM users
+        WHERE username = "${String(username)}"
+          AND password = "${String(password)}"
+        ORDER BY role ASC
+        LIMIT 1
+      `) as Array<{ username: string; role: string }>;
+    } catch {
+      rows = [];
+    }
 
     const user = rows[0];
 

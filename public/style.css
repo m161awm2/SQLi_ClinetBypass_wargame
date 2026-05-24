@@ -1,0 +1,109 @@
+
+body { /* 해당 코드의 의미는 바로 배경의 움직임을 나타냄 */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
+    background-size: 800% 800%;
+    animation: gradientAnimation 10s ease infinite;
+}
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+.login-box {
+    width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+}
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.login-box button:hover {
+    background-color: #45a049;
+}
+.login-box input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.text-box{
+    text-align: center;
+    width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+}
+.text-box2{/* For flag output */
+    text-align: center;
+    width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+}.rainbow_text {
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red); /* ✨ 끝에 red 추가 (부드러운 반복) */
+    background-size: 400% 100%; 
+    animation: rainbowAnimation 5s linear infinite;
+    
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    background-clip: text; 
+}
+
+@keyframes rainbowAnimation {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 400% 0%; } 
+}
+.fight {
+    width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #000;
+}
+#attack-button { 
+    width: 100%;
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+#attack-button:hover {
+    background-color: #d32f2f;
+
+}
+#attack-button:active {
+    transform: translateY(1px) scale(0.98); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); 
+}
